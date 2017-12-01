@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import arr from './greeter'
+import '../css/main.css'
 
 $('h1').css({backgroundColor: '#fa0'})
 

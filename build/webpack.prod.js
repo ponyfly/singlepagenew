@@ -16,7 +16,8 @@ function resolve(dir) {
 module.exports = merge(baseConfig, {
   output: {
     path: resolve('dist'),
-    filename: 'static/js/[name].[chunkhash:8].js'
+    filename: 'static/js/[name].[chunkhash:8].js',
+    publicPath: '/'
   },
   devtool: 'source-map',
   module: {
@@ -24,8 +25,11 @@ module.exports = merge(baseConfig, {
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
-          loader: 'css-loader'
-        })
+          use: {
+            loader: 'css-loader',
+          },
+          publicPath:'/'
+        }),
       },
       {
         test: /\.styl$/,
@@ -33,7 +37,7 @@ module.exports = merge(baseConfig, {
           use: ['css-loader', 'stylus-loader']
         })
       },
-      {
+     /* {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
@@ -52,14 +56,14 @@ module.exports = merge(baseConfig, {
             image: 'xlink:href'
           }
         }
-      }
+      }*/
     ]
   },
   plugins: [
     //创建一个在编译时可以配置的全局常量
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: 'production'
+        NODE_ENV: JSON.stringify('production')
       }
     }),
     //构建前清空dist
@@ -68,21 +72,27 @@ module.exports = merge(baseConfig, {
     }),
     //根据html模板生成index.html
     new HtmlPlugin({
-      template: '../app/index.html',
+      template: resolve('app/index.html'),
       filename: 'index.html',
       inject: true
     }),
     //复制静态文件
-    new CopyPlugin({
-      from: resolve('static'),
-      to: 'static',
-      ignore: ['.*']
-    }),
+    new CopyPlugin([
+      {
+        from: resolve('static'),
+        to: 'static/css/',
+        ignore: ['.*']
+      }
+    ]),
     //根据代码内容生成hash作为模块下标
     new webpack.HashedModuleIdsPlugin(),
     //压缩js
     new UglifyjsPlugin({
-      sourceMap: true
+      sourceMap: true,
+      uglifyOptions: {
+        compress:true,
+        warnings: false
+      }
     }),
     //提取css
     new ExtractTextPlugin({
@@ -91,7 +101,7 @@ module.exports = merge(baseConfig, {
     //压缩css并删除重复样式
     new OptimizeCssPlugin(),
     //
-    /*new webpack.optimize.CommonsChunkPlugin({
+    new webpack.optimize.CommonsChunkPlugin({
       name: 'vender',
       minChunks: function (module, count) {
         //任何引入的node_modules下的模块都会被打包到vender
@@ -101,6 +111,6 @@ module.exports = merge(baseConfig, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       chunks: ['vender'] //从vender中抽取
-    })*/
+    })
   ]
 })

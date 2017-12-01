@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "server": "http-server dist -a 0.0.0.0 -p 8093 -o"
   },
   "keywords": [],
   "author": "",

@@ -24,14 +24,20 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            cacheDirectory: '../tmp',
+            cacheDirectory: resolve('tmp'),
           }
         },
         include: [resolve('app')],
         exclude: '/node_modules/'
       },
       {
-        test: /\.(png|jgg|svg|gif)$/,
+        test: /\.html$/,
+        use: {
+          loader: 'html-loader'
+        }
+      },
+      {
+        test: /\.(png|jpg|svg|gif)$/,
         use: {
           loader: "url-loader",
           options: {
@@ -49,10 +55,6 @@ module.exports = {
             name: 'static/fonts/[name].[hash:8].[ext]'
           }
         }
-      },
-      {
-        test: /\.html$/,
-        use: 'html-loader'
       }
     ]
   }
