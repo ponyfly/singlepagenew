@@ -13,7 +13,7 @@ class Dog {
     return this.name
   }
 }
-const dog = new Dog('旺财')
+const dog = new Dog('旺财22')
 const dogName = dog.sayName()
 $('button').on('click', function () {
   box2.text(dogName)

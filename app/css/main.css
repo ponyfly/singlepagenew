@@ -4,3 +4,7 @@
   background: url("../imgs/avator.jpg") no-repeat;
   background-size: cover;
 }
+.box2 {
+  font-size: 32px;
+  background-color: yellowgreen;
+}

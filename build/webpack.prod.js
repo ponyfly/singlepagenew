@@ -37,13 +37,13 @@ module.exports = merge(baseConfig, {
           use: ['css-loader', 'stylus-loader']
         })
       },
-     /* {
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
           loaders: {
             css: ExtractTextPlugin.extract({
-              loader: 'css-loader'
+              use: 'css-loader' //此处不能用loader: 'css-loader',因为插件没有loader这个属性
             }),
             stylus: ExtractTextPlugin.extract({
               use: ['css-loader', 'stylus-loader']
@@ -56,7 +56,7 @@ module.exports = merge(baseConfig, {
             image: 'xlink:href'
           }
         }
-      }*/
+      }
     ]
   },
   plugins: [
